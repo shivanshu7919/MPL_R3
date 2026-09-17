@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Games Track | MPL</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bebas+Neue&family=Chakra+Petch:wght@700&family=Michroma&family=Orbitron:wght@600;700;800;900&family=Syne:wght@800&family=Teko:wght@700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+
+    <link rel="stylesheet" href="track.css">
+</head>
+
+<body>
+    <!-- Cosmic Background Layers -->
+    <div class="bg-photo"></div>
+    <div class="bg-tint"></div>
+    <div class="aurora"><span class="a1"></span><span class="a2"></span></div>
+    <canvas id="stars"></canvas>
+
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="track-navbar">
+
+        <div class="track-logo">
+            <img src="../assets/images/mpl-crest.png" alt="MPL Logo"
+                onerror="this.onerror=null;this.src='../Logo.png';">
+        </div>
+
+        <div class="track-navigation">
+            <button class="track-nav-button" id="homeButton">
+                <span>Home</span>
+            </button>
+            <button class="track-nav-button" id="resetButton">
+                <span>Reset</span>
+            </button>
+        </div>
+
+    </nav>
+
+
+    <!-- ================= TRACK HEADER ================= -->
+    <header class="track-header">
+
+        <h1 class="track-title">
+            GAMES TRACK
+        </h1>
+
+        <div class="title-decoration"></div>
+
+    </header>
+
+
+    <!-- ================= QUESTIONS ================= -->
+    <main class="question-grid">
+
+        <!-- 100 -->
+        <div class="question-card" data-track="GAMES" data-points="100"
+            data-question="Which video game character is known for collecting rings?" data-answer="Sonic the Hedgehog">
+
+            <h2 class="question-name">
+                QUESTION 1
+            </h2>
+
+            <div class="question-divider"></div>
+
+            <p class="question-points">
+                100
+            </p>
+
+        </div>
+
+
+        <!-- 200 -->
+        <div class="question-card" data-track="GAMES" data-points="200"
+            data-question="Which company created the Super Mario series?" data-answer="Nintendo">
+
+            <h2 class="question-name">
+                QUESTION 2
+            </h2>
+
+            <div class="question-divider"></div>
+
+            <p class="question-points">
+                200
+            </p>
+
+        </div>
+
+
+        <!-- 300 -->
+        <div class="question-card" data-track="GAMES" data-points="300"
+            data-question="What is the name of the main character in the Minecraft game?" data-answer="Steve">
+
+            <h2 class="question-name">
+                QUESTION 3
+            </h2>
+
+            <div class="question-divider"></div>
+
+            <p class="question-points">
+                300
+            </p>
+
+        </div>
+
+
+        <!-- 400 -->
+        <div class="question-card" data-track="GAMES" data-points="400"
+            data-question="Which game features the battle royale mode called 'Warzone'?" data-answer="Call of Duty">
+
+            <h2 class="question-name">
+                QUESTION 4
+            </h2>
+
+            <div class="question-divider"></div>
+
+            <p class="question-points">
+                400
+            </p>
+
+        </div>
+
+
+        <!-- 500 -->
+        <div class="question-card" data-track="GAMES" data-points="500"
+            data-question="Which video game series features the characters Link and Princess Zelda?"
+            data-answer="The Legend of Zelda">
+
+            <h2 class="question-name">
+                QUESTION 5
+            </h2>
+
+            <div class="question-divider"></div>
+
+            <p class="question-points">
+                500
+            </p>
+
+        </div>
+
+
+        <!-- 600 -->
+        <div class="question-card" data-track="GAMES" data-points="600"
+            data-question="Which game is famous for the phrase 'Winner Winner Chicken Dinner'?"
+            data-answer="PUBG / PlayerUnknown's Battlegrounds">
+
+            <h2 class="question-name">
+                QUESTION 6
+            </h2>
+
+            <div class="question-divider"></div>
+
+            <p class="question-points">
+                600
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= QUESTION POPUP ================= -->
+    <div class="question-popup" id="questionPopup">
+
+        <div class="popup-content">
+
+            <button class="close-popup" id="closePopup">
+                ×
+            </button>
+
+            <!-- 30-SEC COUNTDOWN TIMER -->
+            <div class="popup-timer" id="popupTimer">
+                <span class="timer-icon">⏱</span>
+                <span class="timer-val" id="timerCount">30</span>
+                <span class="timer-sec">SEC</span>
+            </div>
+
+
+            <p class="popup-track" id="popupTrack">
+                GAMES
+            </p>
+
+            <h2 class="popup-question" id="popupQuestion">
+                Question
+            </h2>
+
+            <p class="popup-points">
+                <span id="popupPoints">100</span> POINTS
+            </p>
+
+            <button class="answer-button" id="answerButton">
+                SHOW ANSWER
+            </button>
+
+            <div class="popup-answer" id="popupAnswer">
+                Answer
+            </div>
+
+            <!-- POWER-UP BUTTON -->
+            <button class="powerup-button" id="powerUpButton">
+                <span>⚡ POWER UP</span>
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <!-- =====================================================
+         WILD CARD POPUP
+    ====================================================== -->
+    <div class="bidding-popup" id="biddingPopup">
+        <div class="bidding-box">
+            <button class="close-bidding" id="closeBidding">×</button>
+            <div class="bidding-badge">🃏 WILD CARD!</div>
+            <button class="reveal-btn" id="revealQuestionBtn">Open Question</button>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         POWER-UP POPUP (TEAM BENEFIT)
+    ====================================================== -->
+    <div class="powerup-popup" id="powerUpPopup">
+        <div class="powerup-box">
+            <button class="close-powerup" id="closePowerUp">×</button>
+            <div class="powerup-badge">⚡ POWER-UP BENEFIT</div>
+            <div class="powerup-benefit-text" id="powerUpBenefitText">
+                ⚡ TEAM BENEFIT: The team solving this Wild Card earns +100 BONUS POINTS and a 2X MULTIPLIER on their next question!
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/stars.js"></script>
+    <script src="track.js"></script>
+
+</body>
+
+</html>

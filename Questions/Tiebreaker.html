@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tiebreaker | MPL</title>
+
+    <!-- COMMON CSS -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bebas+Neue&family=Chakra+Petch:wght@700&family=Michroma&family=Orbitron:wght@600;700;800;900&family=Syne:wght@800&family=Teko:wght@700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="track.css">
+</head>
+
+
+<body>
+    <!-- Cosmic Background Layers -->
+    <div class="bg-photo"></div>
+    <div class="bg-tint"></div>
+    <div class="aurora"><span class="a1"></span><span class="a2"></span></div>
+    <canvas id="stars"></canvas>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="track-navbar">
+
+        <!-- LOGO -->
+
+        <div class="track-logo">
+
+            <img src="../assets/images/mpl-crest.png" alt="MPL Logo"
+                onerror="this.onerror=null;this.src='../Logo.png';">
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <div class="track-navigation">
+            <button class="track-nav-button" id="homeButton">
+                <span>Home</span>
+            </button>
+            <button class="track-nav-button" id="resetButton">
+                <span>Reset</span>
+            </button>
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         TRACK TITLE
+    ====================================================== -->
+
+    <section class="track-header">
+
+        <h1 class="track-title">
+            TIEBREAKER
+        </h1>
+
+        <div class="title-decoration">
+            ◆ ◆ ◆
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         TIEBREAKER QUESTION
+    ====================================================== -->
+
+    <main class="question-grid">
+
+
+        <!-- QUESTION 1 -->
+
+        <div class="question-card" data-track="TIEBREAKER"
+            data-question="Which country has won the most FIFA World Cup titles?" data-points="100"
+            data-answer="Brazil has won the FIFA World Cup five times.">
+
+            <div class="question-name">
+                QUESTION 1
+            </div>
+
+            <div class="question-divider"></div>
+
+            <div class="question-points">
+                100
+            </div>
+
+        </div>
+
+
+
+        <!-- QUESTION 2 -->
+
+        <div class="question-card" data-track="TIEBREAKER" data-question="What is the capital city of Australia?"
+            data-points="200" data-answer="Canberra.">
+
+            <div class="question-name">
+                QUESTION 2
+            </div>
+
+            <div class="question-divider"></div>
+
+            <div class="question-points">
+                200
+            </div>
+
+        </div>
+
+
+
+        <!-- QUESTION 3 -->
+
+        <div class="question-card" data-track="TIEBREAKER" data-question="Which planet is known as the Red Planet?"
+            data-points="300" data-answer="Mars.">
+
+            <div class="question-name">
+                QUESTION 3
+            </div>
+
+            <div class="question-divider"></div>
+
+            <div class="question-points">
+                300
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         QUESTION POPUP
+    ====================================================== -->
+
+    <div class="question-popup" id="questionPopup">
+
+        <div class="popup-content">
+
+
+            <!-- CLOSE BUTTON -->
+
+            <button class="close-popup" id="closePopup">
+                ×
+            </button>
+
+            <!-- 30-SEC COUNTDOWN TIMER -->
+            <div class="popup-timer" id="popupTimer">
+                <span class="timer-icon">⏱</span>
+                <span class="timer-val" id="timerCount">30</span>
+                <span class="timer-sec">SEC</span>
+            </div>
+
+
+
+            <!-- TRACK NAME -->
+
+            <div class="popup-track" id="popupTrack">
+                TIEBREAKER
+            </div>
+
+
+            <!-- QUESTION -->
+
+            <div class="popup-question" id="popupQuestion">
+                Question
+            </div>
+
+
+            <!-- POINTS -->
+
+            <div class="popup-points" id="popupPoints">
+                100
+            </div>
+
+
+            <!-- SHOW ANSWER -->
+
+            <button class="answer-button" id="answerButton">
+                SHOW ANSWER
+            </button>
+
+
+            <!-- ANSWER -->
+
+            <div class="popup-answer" id="popupAnswer">
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         COMMON JS
+    ====================================================== -->
+    <script src="../assets/js/stars.js"></script>
+
+    <script src="track.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Math Premier League</title>
+    <meta name="description"
+        content="Standalone Admin Portal for Math Premier League - Manage teams, adjust points, and view live ranked leaderboards.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Admin Stylesheet -->
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <div class="admin-app-layout">
+
+        <!-- =====================================================
+             FIXED LEFT SIDEBAR NAVIGATION (ALWAYS VISIBLE)
+        ====================================================== -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <!-- Sidebar Header / Branding -->
+            <div class="sidebar-brand">
+                <div class="brand-logo-wrap">
+                    <img src="../Logo.png" alt="MPL Logo" class="brand-logo"
+                        onerror="this.onerror=null;this.src='../assets/images/mpl-crest.png';">
+                </div>
+                <div class="brand-info">
+                    <!-- <span class="brand-badge">ADMIN CONSOLE</span> -->
+                    <h1 class="brand-title">MPL Scoring</h1>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs List -->
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">MAIN NAVIGATION</div>
+
+                <button type="button" class="nav-tab-btn active" data-tab="add-teams" id="tabBtnAddTeams">
+                    <span class="nav-tab-text">Add Teams</span>
+                    <span class="nav-tab-badge" id="sidebarTeamCount">0</span>
+                </button>
+
+                <button type="button" class="nav-tab-btn" data-tab="points" id="tabBtnPoints">
+                    <span class="nav-tab-text">Points</span>
+                </button>
+
+                <button type="button" class="nav-tab-btn" data-tab="leaderboard" id="tabBtnLeaderboard">
+                    <span class="nav-tab-text">Leaderboard</span>
+                </button>
+
+                <button type="button" class="nav-tab-btn" data-tab="team-details" id="tabBtnTeamDetails">
+                    <span class="nav-tab-text">Team Details</span>
+                </button>
+
+                <button type="button" class="nav-tab-btn" data-tab="activity-log" id="tabBtnActivityLog">
+                    <span class="nav-tab-text">Activity Log</span>
+                </button>
+            </nav>
+
+            <!-- Sidebar Footer Status & Quick Link -->
+            <div class="sidebar-footer">
+                <!-- <div class="system-status-pill">
+                    <span class="status-dot"></span>
+                    <span>Local Storage Active</span>
+                </div> -->
+                <a href="../index.html" class="sidebar-link-btn" title="Back to Jeopardy Tracks">
+                    <span>Return to Main Site</span>
+                </a>
+            </div>
+        </aside>
+
+
+        <!-- =====================================================
+             MAIN CONTENT WRAPPER
+        ====================================================== -->
+        <div class="admin-main-wrapper">
+
+            <!-- Top Header Bar -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <h2 class="view-title" id="currentViewTitle">Add Teams</h2>
+                </div>
+
+                <!-- Stats Badges -->
+                <div class="topbar-stats">
+                    <div class="mini-stat-chip">
+                        <span class="chip-label">Teams</span>
+                        <span class="chip-val" id="statTotalTeams">0</span>
+                    </div>
+                    <div class="mini-stat-chip highlight-gold">
+                        <span class="chip-label">Leader</span>
+                        <span class="chip-val text-truncate" id="statLeadingTeam">—</span>
+                    </div>
+                    <div class="mini-stat-chip highlight-orange">
+                        <span class="chip-label">Top Score</span>
+                        <span class="chip-val" id="statTopScore">0</span>
+                    </div>
+                    <!-- Hidden element kept for JS calculations -->
+                    <span id="statTotalPoints" style="display: none;">0</span>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="topbar-actions">
+                    <button class="action-outline-btn warning" id="resetScoresBtn" title="Reset all team points to 0">
+                        <span>Reset</span>
+                    </button>
+                    <button class="action-outline-btn danger" id="clearTeamsBtn" title="Delete all teams">
+                        <span>Clear</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Scrollable Content Area -->
+            <main class="admin-content-body">
+
+                <!-- =================================================
+                     TAB 1: ADD TEAMS
+                ================================================== -->
+                <section class="tab-panel active" id="panel-add-teams">
+                    <div class="content-columns">
+                        <!-- Left Sub-column: Add Team Form -->
+                        <div class="form-container-card">
+                            <div class="section-card-header">
+                                <div>
+                                    <h3 class="card-heading">Add New Team</h3>
+                                    <p class="card-subheading">Create a team by name and assign its members</p>
+                                </div>
+                            </div>
+
+                            <form id="teamForm" class="clean-form">
+                                <div class="form-group">
+                                    <label class="form-label required" for="teamNameInput">Team Name</label>
+                                    <input type="text" id="teamNameInput" class="input-field"
+                                        placeholder="e.g. Matrix Masters, Cyber Ninjas..." autocomplete="off" required>
+                                </div>
+
+                                <div class="members-input-group">
+                                    <label class="form-label">Team Members (Max 4)</label>
+                                    <div class="members-grid-blocks">
+                                        <div class="member-input-block">
+                                            <span class="member-badge-label">1</span>
+                                            <input type="text" id="memberInput1" class="input-field member-input"
+                                                placeholder="Member 1 Name" autocomplete="off">
+                                        </div>
+                                        <div class="member-input-block">
+                                            <span class="member-badge-label">2</span>
+                                            <input type="text" id="memberInput2" class="input-field member-input"
+                                                placeholder="Member 2 Name" autocomplete="off">
+                                        </div>
+                                        <div class="member-input-block">
+                                            <span class="member-badge-label">3</span>
+                                            <input type="text" id="memberInput3" class="input-field member-input"
+                                                placeholder="Member 3 Name" autocomplete="off">
+                                        </div>
+                                        <div class="member-input-block">
+                                            <span class="member-badge-label">4</span>
+                                            <input type="text" id="memberInput4" class="input-field member-input"
+                                                placeholder="Member 4 Name" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="primary-btn-gradient" id="createTeamBtn">
+                                    <span>+ Add Team</span>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Right Sub-column: Added Teams Roster Overview -->
+                        <div class="roster-overview-card">
+                            <div class="section-card-header">
+                                <div>
+                                    <h3 class="card-heading">Registered Teams - <span id="registeredTeamsCount">0</span>
+                                    </h3>
+                                    <p class="card-subheading">Teams available for points scoring & leaderboard</p>
+                                </div>
+                            </div>
+
+                            <div class="teams-list-grid" id="teamsListGrid">
+                                <!-- Populated dynamically by admin.js -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- =================================================
+                     TAB 2: POINTS
+                ================================================== -->
+                <section class="tab-panel" id="panel-points">
+                    <div class="points-management-grid">
+
+                        <!-- Main Points Controller Card -->
+                        <div class="points-controller-card">
+                            <div class="section-card-header">
+                                <div>
+                                    <h3 class="card-heading">Points Control Center</h3>
+                                    <p class="card-subheading">Select a team, specify points, choose an optional power-up used in the question, and apply score</p>
+                                </div>
+                            </div>
+
+                            <!-- Team Selector -->
+                            <div class="form-group selector-highlight-box">
+                                <label class="form-label required" for="teamSelect">Select Target Team</label>
+                                <select id="teamSelect" class="input-field select-field">
+                                    <option value="">-- Choose Target Team --</option>
+                                </select>
+                            </div>
+
+                            <!-- Selected Team Info Banner -->
+                            <div class="selected-team-banner" id="selectedTeamBanner" style="display: none;">
+                                <div class="banner-avatar" id="bannerTeamAvatar" style="display: none;"></div>
+                                <div class="banner-info">
+                                    <div class="banner-name" id="bannerTeamName">Team Name</div>
+                                    <div class="banner-sub" id="bannerTeamMembers">0 members</div>
+                                </div>
+                                <div class="banner-score">
+                                    <span class="banner-score-val" id="bannerTeamScore">0</span>
+                                    <span class="banner-score-label">CURRENT PTS</span>
+                                </div>
+                            </div>
+
+                            <!-- Quick Points Matrix -->
+                            <div class="form-group">
+                                <label class="form-label">Quick Select Points</label>
+                                <div class="quick-points-matrix">
+                                    <button type="button" class="point-btn add" data-amount="100">+100</button>
+                                    <button type="button" class="point-btn add" data-amount="200">+200</button>
+                                    <button type="button" class="point-btn add" data-amount="300">+300</button>
+                                    <button type="button" class="point-btn add" data-amount="400">+400</button>
+                                    <button type="button" class="point-btn add" data-amount="500">+500</button>
+                                    <button type="button" class="point-btn add" data-amount="600">+600</button>
+                                </div>
+                            </div>
+
+                            <!-- Points Input Box & Optional Reason -->
+                            <div class="form-row-2 points-input-row">
+                                <div class="form-group points-box-group">
+                                    <label class="form-label required" for="pointsAmountInput">Points Amount</label>
+                                    <input type="number" id="pointsAmountInput" class="input-field points-amount-field"
+                                        placeholder="0" min="1" step="1">
+                                </div>
+                                <div class="form-group points-reason-group">
+                                    <label class="form-label" for="pointsReasonInput">Reason / Note (Optional)</label>
+                                    <input type="text" id="pointsReasonInput" class="input-field"
+                                        placeholder="e.g. Wrong answer, Time penalty, Bonus..." autocomplete="off">
+                                </div>
+                            </div>
+
+                            <!-- Power-Up Selection (Recorded per question in Activity Log) -->
+                            <div class="form-group powerup-assignment-section">
+                                <label class="form-label" for="powerUpSelect">Power-Up Used in Question (Optional)</label>
+                                <select id="powerUpSelect" class="input-field select-field">
+                                    <option value="">-- No Power-Up / None --</option>
+                                    <option value="2x_multiplier">2X Double Points</option>
+                                    <option value="time_boost">Extra Time (+30s)</option>
+                                    <option value="question_swap">Question Swap</option>
+                                    <option value="hint_access">Hint Access</option>
+                                    <option value="team_assist">Team Tag / Collaboration</option>
+                                    <option value="shield_protect">Score Shield / Protection</option>
+                                </select>
+                            </div>
+
+                            <!-- Add / Reduce Action Buttons -->
+                            <div class="points-action-buttons-grid">
+                                <button type="button" class="primary-btn-gradient" id="addPointsSubmitBtn">
+                                    <span>+ Add Points</span>
+                                </button>
+                                <button type="button" class="danger-btn-gradient" id="reducePointsSubmitBtn">
+                                    <span>- Reduce Points</span>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- Sidebar Quick Leaderboard Preview in Points Tab -->
+                        <div class="points-summary-card">
+                            <div class="section-card-header">
+                                <div>
+                                    <h3 class="card-heading">Live Score Standings</h3>
+                                    <p class="card-subheading">Click any team to quickly select it</p>
+                                </div>
+                            </div>
+
+                            <div class="quick-team-scores-list" id="quickScoresList">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- =================================================
+                     TAB 3: LEADERBOARD
+                ================================================== -->
+                <section class="tab-panel" id="panel-leaderboard">
+                    <div class="leaderboard-full-card">
+                        <div class="section-card-header flex-between">
+                            <div class="header-left">
+                                <div>
+                                    <h3 class="card-heading">Tournament Leaderboard</h3>
+                                    <p class="card-subheading">Teams ranked strictly by points in descending order</p>
+                                </div>
+                            </div>
+                            <div class="leaderboard-actions">
+                                <span class="badge-live-sync">LIVE SYNC</span>
+                            </div>
+                        </div>
+
+                        <div class="leaderboard-list" id="leaderboardContainer">
+                            <!-- Populated dynamically by admin.js -->
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- =================================================
+                     TAB 4: TEAM DETAILS
+                ================================================== -->
+                <section class="tab-panel" id="panel-team-details">
+                    <div class="team-details-layout">
+
+                        <!-- Team Selection Card -->
+                        <div class="team-details-select-card">
+                            <div class="section-card-header">
+                                <div>
+                                    <h3 class="card-heading">Choose Team</h3>
+                                    <p class="card-subheading">Select a team from the list of added teams</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label required" for="detailsTeamSelect">Select Team to
+                                    Inspect</label>
+                                <select id="detailsTeamSelect" class="input-field select-field">
+                                    <option value="">-- Choose Team to View Members --</option>
+                                </select>
+                            </div>
+
+                            <div class="team-quick-selector-chips" id="detailsQuickChips">
+                                <!-- Chips for all teams -->
+                            </div>
+                        </div>
+
+                        <!-- Team Detailed Info & Member Roster Display -->
+                        <div class="team-details-view-card" id="teamDetailsDisplayCard">
+                            <div class="empty-state" id="teamDetailsEmpty">
+                                <h4>No Team Selected</h4>
+                                <p>Please choose a team from the dropdown above to view its members and details.</p>
+                            </div>
+
+                            <div class="details-content" id="teamDetailsContent" style="display: none;">
+                                <!-- Header with banner -->
+                                <div class="team-profile-header">
+                                    <div class="profile-avatar-large" id="detailsAvatar" style="display: none;"></div>
+                                    <div class="profile-meta">
+                                        <div class="profile-title-row">
+                                            <h2 class="profile-name" id="detailsName">Team Name</h2>
+                                            <span class="profile-rank-badge" id="detailsRank">Rank #1</span>
+                                        </div>
+                                        <div class="profile-stats-row">
+                                            <div class="p-stat">
+                                                <span class="p-val" id="detailsPoints">0</span>
+                                                <span class="p-lbl">Points</span>
+                                            </div>
+                                            <div class="p-stat">
+                                                <span class="p-val" id="detailsMemberCount">0</span>
+                                                <span class="p-lbl">Members</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="profile-actions">
+                                        <button type="button" class="primary-btn-gradient small"
+                                            id="detailsGoToPointsBtn">
+                                            Award Points
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Members List -->
+                                <div class="members-section">
+                                    <div class="members-section-header">
+                                        <h4 class="members-title">Team Members</h4>
+                                        <span class="members-count-badge" id="detailsMembersBadge">0 Members</span>
+                                    </div>
+
+                                    <div class="members-grid" id="detailsMembersList">
+                                        <!-- Dynamically listed members -->
+                                    </div>
+
+                                    <!-- Add New Member Form -->
+                                    <div class="add-member-bar">
+                                        <input type="text" id="newMemberInput" class="input-field"
+                                            placeholder="Add a new member name...">
+                                        <button type="button" class="btn-add-member" id="addMemberBtn">+ Add
+                                            Member</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- =================================================
+                     TAB 5: ACTIVITY LOG
+                ================================================== -->
+                <section class="tab-panel" id="panel-activity-log">
+                    <div class="activity-log-card">
+                        <div class="section-card-header flex-between">
+                            <div class="header-left">
+                                <div>
+                                    <h3 class="card-heading">Match Activity & Audit Log</h3>
+                                    <p class="card-subheading">Chronological history of all scoring events and
+                                        adjustments</p>
+                                </div>
+                            </div>
+                            <button type="button" class="action-outline-btn warning" id="clearLogBtn"
+                                title="Clear Activity Log">
+                                <span>Clear Log</span>
+                            </button>
+                        </div>
+
+                        <div class="audit-log-box" id="auditLogContainer">
+                            <!-- Populated dynamically by admin.js -->
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="admin.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cartoons Track | MPL</title>
+    <meta http-equiv="refresh" content="0; url=Cartoons.html">
+    <script>window.location.replace("Cartoons.html");</script>
+
+    <!-- COMMON TRACK CSS -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bebas+Neue&family=Chakra+Petch:wght@700&family=Michroma&family=Orbitron:wght@600;700;800;900&family=Syne:wght@800&family=Teko:wght@700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="track.css">
+
+</head>
+
+
+<body>
+    <!-- Cosmic Background Layers -->
+    <div class="bg-photo"></div>
+    <div class="bg-tint"></div>
+    <div class="aurora"><span class="a1"></span><span class="a2"></span></div>
+    <canvas id="stars"></canvas>
+
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="track-navbar">
+
+        <!-- LOGO -->
+
+        <div class="track-logo">
+
+            <img src="../assets/images/mpl-crest.png" alt="MPL Logo"
+                onerror="this.onerror=null;this.src='../Logo.png';">
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <div class="track-navigation">
+            <button class="track-nav-button" id="homeButton">
+                <span>Home</span>
+            </button>
+            <button class="track-nav-button" id="resetButton">
+                <span>Reset</span>
+            </button>
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         TRACK TITLE
+    ====================================================== -->
+
+    <section class="track-header">
+
+        <h1 class="track-title">
+            MEMES TRACK
+        </h1>
+
+        <div class="title-decoration">
+            ◆ ◆ ◆
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUESTION GRID
+    ====================================================== -->
+
+    <main class="question-grid">
+
+
+        <!-- =================================================
+             QUESTION 1
+        ================================================== -->
+
+        <div class="question-card" data-track="MEMES"
+            data-question="Which meme features a man looking back at another woman while walking with his girlfriend?"
+            data-points="100" data-answer="The Distracted Boyfriend meme.">
+
+            <div class="question-name">
+                QUESTION 1
+            </div>
+
+            <div class="question-divider"></div>
+
+            <div class="question-points">
+                100
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             QUESTION 2
+        ================================================== -->
+
+        <div class="question-card" data-track="MEMES"
+            data-question="Which meme is commonly associated with the phrase 'This is fine'?" data-points="200"
+            data-answer="The 'This Is Fine' dog meme.">
+
+            <div class="question-name">
+                QUESTION 2
+            </div>
+
+            <div class="question-divider"></div>
+
+            <div class="question-points">
+                200
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             QUESTION 3
+        ================================================== -->
+
+        <div class="question-card" data-track="MEMES"
+            data-question="Which meme character is a green cartoon frog that became popular on the internet?"
+            data-points="300" data-answer="Pepe the Frog.">
+
+            <div class="question-name">
+                QUESTION 3
+            </div>
+
+            <div class="question-divider"></div>
+
+            <div class="question-points">
+                300
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             QUESTION 4
+        ================================================== -->
+
+        <div class="question-card" data-track="MEMES"
+            data-question="Which meme features a black-and-white image of a man pointing at his head, suggesting intelligence?"
+            data-points="400" data-answer="The 'Roll Safe' meme.">
+
+            <div class="question-name">
+                QUESTION 4
+            </div>
+
+            <div class="question-divider"></div>
+
+            <div class="question-points">
+                400
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             QUESTION 5
+        ================================================== -->
+
+        <div class="question-card" data-track="MEMES"
+            data-question="What does the acronym LOL commonly mean on the internet?" data-points="500"
+            data-answer="LOL means 'Laughing Out Loud'.">
+
+            <div class="question-name">
+
+                QUESTION 5
+
+            </div>
+
+
+            <div class="question-divider"></div>
+
+
+            <div class="question-points">
+
+                500
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             QUESTION 6
+        ================================================== -->
+
+        <div class="question-card" data-track="MEMES"
+            data-question="Which meme format shows a person making a dramatic facial expression and is commonly used to express disbelief?"
+            data-points="600"
+            data-answer="The 'Black Guy Hiding Behind a Tree' meme is commonly used online to express awkwardness or wanting to disappear.">
+
+            <div class="question-name">
+                QUESTION 6
+            </div>
+
+            <div class="question-divider"></div>
+
+            <div class="question-points">
+                600
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         QUESTION POPUP
+    ====================================================== -->
+
+    <div class="question-popup" id="questionPopup">
+
+        <div class="popup-content">
+
+
+            <!-- CLOSE -->
+
+            <button class="close-popup" id="closePopup">
+                ×
+            </button>
+
+            <!-- 30-SEC COUNTDOWN TIMER -->
+            <div class="popup-timer" id="popupTimer">
+                <span class="timer-icon">⏱</span>
+                <span class="timer-val" id="timerCount">30</span>
+                <span class="timer-sec">SEC</span>
+            </div>
+
+
+
+            <!-- TRACK -->
+
+            <div class="popup-track" id="popupTrack">
+                MEMES
+            </div>
+
+
+            <!-- QUESTION -->
+
+            <div class="popup-question" id="popupQuestion">
+                Question
+            </div>
+
+
+            <!-- POINTS -->
+
+            <div class="popup-points" id="popupPoints">
+                100
+            </div>
+
+
+            <!-- ANSWER BUTTON -->
+
+            <button class="answer-button" id="answerButton">
+                SHOW ANSWER
+            </button>
+
+
+            <!-- ANSWER -->
+
+            <div class="popup-answer" id="popupAnswer">
+            </div>
+
+            <!-- POWER-UP BUTTON -->
+            <button class="powerup-button" id="powerUpButton">
+                <span>⚡ POWER UP</span>
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         COMMON TRACK JS
+    ====================================================== -->
+    <!-- =====================================================
+         WILD CARD POPUP
+    ====================================================== -->
+    <div class="bidding-popup" id="biddingPopup">
+        <div class="bidding-box">
+            <button class="close-bidding" id="closeBidding">×</button>
+            <div class="bidding-badge">🃏 WILD CARD!</div>
+            <button class="reveal-btn" id="revealQuestionBtn">Open Question</button>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         POWER-UP POPUP (TEAM BENEFIT)
+    ====================================================== -->
+    <div class="powerup-popup" id="powerUpPopup">
+        <div class="powerup-box">
+            <button class="close-powerup" id="closePowerUp">×</button>
+            <div class="powerup-badge">⚡ POWER-UP BENEFIT</div>
+            <div class="powerup-benefit-text" id="powerUpBenefitText">
+                ⚡ TEAM BENEFIT: The team solving this Wild Card earns +100 BONUS POINTS and a 2X MULTIPLIER on their next question!
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/stars.js"></script>
+
+    <script src="track.js"></script>
+
+</body>
+
+</html>

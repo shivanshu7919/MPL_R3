@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeopardy | Math Premier League</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bebas+Neue&family=Chakra+Petch:wght@700&family=Michroma&family=Orbitron:wght@600;700;800;900&family=Syne:wght@800&family=Teko:wght@700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Cosmic Background Layers -->
+    <div class="bg-photo"></div>
+    <div class="bg-tint"></div>
+    <div class="aurora"><span class="a1"></span><span class="a2"></span></div>
+    <canvas id="stars"></canvas>
+
+    <!-- Decorative Cyber Accents -->
+    <div class="doodle doodle-left">✦</div>
+    <div class="doodle doodle-right">⬡</div>
+    <div class="scribble scribble-2">⚡</div>
+
+    <!-- ================= TOP NAVBAR ================= -->
+    <header class="topbar">
+        <div class="logo">
+            <a class="logo" href="#">
+                <img src="assets/images/mpl-crest.png" alt="Math Premier League Crest"
+                    onerror="this.onerror=null;this.src='Logo.png';">
+            </a>
+        </div>
+
+        <div class="buttons">
+            <button class="nav-btn home-btn" onclick="goHome()">
+                <span>Home</span>
+            </button>
+
+            <button class="nav-btn reset-btn" onclick="resetGame()">
+                <span>Reset</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ================= HERO & WORDMARK ================= -->
+    <section class="hero">
+
+
+        <h1 class="wordmark">
+            <span class="line1">JEOPARDY</span>
+            <span class="line2">TRACKS</span>
+        </h1>
+
+
+    </section>
+
+    <!-- ================= CATEGORY CARDS ================= -->
+    <main class="tracks">
+        <!-- ROW 1 -->
+        <a href="Questions/Sports.html">
+            <div class="track-card">
+                <div class="icon">🏆</div>
+                <h2>SPORTS</h2>
+            </div>
+        </a>
+
+        <a href="Questions/Movies.html">
+            <div class="track-card">
+                <div class="icon">🎬</div>
+                <h2>MOVIES</h2>
+            </div>
+        </a>
+
+        <a href="Questions/Cartoons.html">
+            <div class="track-card">
+                <div class="icon">📺</div>
+                <h2>CARTOONS</h2>
+            </div>
+        </a>
+
+        <!-- ROW 2 -->
+        <a href="Questions/Maths.html">
+            <div class="track-card">
+                <div class="icon math-icon">π</div>
+                <h2>MATHS</h2>
+            </div>
+        </a>
+
+        <a href="Questions/Songs.html">
+            <div class="track-card">
+                <div class="icon">♫</div>
+                <h2>SONGS</h2>
+            </div>
+        </a>
+
+        <a href="Questions/Games.html">
+            <div class="track-card">
+                <div class="icon">🎮</div>
+                <h2>GAMES</h2>
+            </div>
+        </a>
+
+        <!-- ROW 3 (CENTERED) -->
+        <a href="Questions/RapidFire.html" class="row-3-card row-3-first">
+            <div class="track-card">
+                <div class="icon lightning">⚡</div>
+                <h2>RAPID FIRE</h2>
+            </div>
+        </a>
+
+        <a href="Questions/Tiebreaker.html" class="row-3-card row-3-second">
+            <div class="track-card">
+                <div class="icon">⚡</div>
+                <h2>TIEBREAKER</h2>
+            </div>
+        </a>
+    </main>
+
+    <!-- ================= POPUP MODAL ================= -->
+    <div class="popup" id="popup">
+        <div class="popup-box">
+            <button class="close" onclick="closePopup()">×</button>
+            <div id="popupIcon">🏆</div>
+            <h2 id="popupTitle">SPORTS</h2>
+            <p id="popupText">
+                Get ready for the challenge!
+            </p>
+            <button class="start-btn" onclick="startTrack()">
+                START TRACK
+            </button>
+        </div>
+    </div>
+
+    <!-- Discreet Bottom Admin Access -->
+    <a href="admin/index.html" class="subtle-admin-btn" title="Admin Panel" aria-label="Admin Panel">
+        <span class="subtle-admin-icon">⚙</span>
+        <span class="subtle-admin-text">Admin</span>
+    </a>
+
+    <!-- Scripts -->
+    <script src="assets/js/stars.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
