@@ -78,13 +78,16 @@
 }
 
 /* Base Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   min-height: 100vh;
   background-color: var(--bg-body);
@@ -100,13 +103,16 @@ html, body {
   width: 7px;
   height: 7px;
 }
+
 ::-webkit-scrollbar-track {
   background: #f8fafc;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--orange-400);
 }
@@ -410,6 +416,7 @@ html, body {
   border-color: var(--yellow-200);
   background: var(--yellow-50);
 }
+
 .mini-stat-chip.highlight-gold .chip-val {
   color: var(--yellow-600);
 }
@@ -418,6 +425,7 @@ html, body {
   border-color: var(--orange-200);
   background: var(--orange-50);
 }
+
 .mini-stat-chip.highlight-orange .chip-val {
   color: var(--orange-600);
 }
@@ -505,6 +513,7 @@ html, body {
     opacity: 0;
     transform: translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1503,7 +1512,7 @@ html, body {
   border-radius: var(--radius-md);
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
   transition: all 0.15s ease;
 }
 
@@ -1690,6 +1699,7 @@ html, body {
    RESPONSIVE DESIGN
 ========================================================= */
 @media (max-width: 1024px) {
+
   .content-columns,
   .points-management-grid,
   .team-details-layout {
@@ -1706,7 +1716,12 @@ html, body {
     --sidebar-width: 76px;
   }
 
-  .brand-title, .brand-badge, .nav-section-label, .nav-tab-text, .nav-tab-badge, .sidebar-footer {
+  .brand-title,
+  .brand-badge,
+  .nav-section-label,
+  .nav-tab-text,
+  .nav-tab-badge,
+  .sidebar-footer {
     display: none;
   }
 

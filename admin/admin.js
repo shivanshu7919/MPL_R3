@@ -11,7 +11,7 @@
    - Clean UI without unnecessary emojis
 ========================================================= */
 
-(function() {
+(function () {
   'use strict';
 
   // Storage Keys
@@ -174,7 +174,7 @@
         osc.start(now);
         osc.stop(now + 0.35);
       }
-    } catch (e) {}
+    } catch (e) { }
   }
 
   /* =========================================================
@@ -287,7 +287,7 @@
   function saveLogs() {
     try {
       localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs.slice(0, 60)));
-    } catch (e) {}
+    } catch (e) { }
   }
 
   function addLog(msg, delta = null) {
