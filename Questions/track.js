@@ -82,8 +82,11 @@ let powerUpBenefitText =
 
 function getCardKey(card, index) {
     const track = (card.dataset.track || '').trim().toUpperCase();
-    const points = (card.dataset.points || index).toString().trim();
-    return `${track}_${points}`;
+    const idx = (typeof index === 'number' && index >= 0)
+        ? index
+        : Array.from(questionCards).indexOf(card);
+    const points = (card.dataset.points || '').toString().trim();
+    return `${track}_${idx}_${points}`;
 }
 
 function initUsedQuestions() {
@@ -91,7 +94,8 @@ function initUsedQuestions() {
         const stored = JSON.parse(localStorage.getItem('mpl_used_questions') || '[]');
         questionCards.forEach((card, idx) => {
             const key = getCardKey(card, idx);
-            if (stored.includes(key)) {
+            const legacyKey = `${(card.dataset.track || '').trim().toUpperCase()}_${(card.dataset.points || idx).toString().trim()}`;
+            if (stored.includes(key) || stored.includes(legacyKey)) {
                 card.classList.add("used");
             }
         });
