@@ -167,8 +167,11 @@ let timerInterval = null;
 let timeLeft = 30;
 
 function getQuestionDuration(card, index) {
-    if (isPowerupDisabledTrack()) {
-        // Rapid Fire and Tiebreaker keep standard 30s timer
+    const trackKey = getTrackKey();
+    if (trackKey === 'RAPID FIRE' || trackKey === 'RAPID_FIRE' || trackKey === 'RAPIDFIRE' || trackKey.includes('RAPID')) {
+        return 20;
+    }
+    if (trackKey === 'TIEBREAKER' || trackKey.includes('TIEBREAKER')) {
         return 30;
     }
     let idx = index;
