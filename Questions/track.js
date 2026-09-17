@@ -208,7 +208,7 @@ function unlockAudio() {
                 isAudioUnlocked = false;
             });
         }
-    } catch (e) {}
+    } catch (e) { }
 }
 
 document.addEventListener("click", unlockAudio, { once: true });
@@ -217,7 +217,7 @@ function stopTimesUpSound() {
     try {
         timeUpAudio.pause();
         timeUpAudio.currentTime = 0;
-    } catch (e) {}
+    } catch (e) { }
 }
 
 function playTimesUpSound() {
@@ -723,7 +723,7 @@ if (biddingPopup) {
 function closeQuestion() {
     if (popup) {
         popup.querySelectorAll('video, audio').forEach(media => {
-            try { media.pause(); media.currentTime = 0; } catch(e) {}
+            try { media.pause(); media.currentTime = 0; } catch (e) { }
         });
         popup.classList.remove("active");
     }
