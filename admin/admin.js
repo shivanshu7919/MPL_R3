@@ -22,35 +22,35 @@
 
   // 6 Power-Up Task Definitions (Clean - No Emojis, Informational only)
   const POWERUP_DEFS = {
-    '2x_multiplier': {
-      id: '2x_multiplier',
-      name: '2X Double Points',
-      desc: '2X Double Points'
+    '2x_reward': {
+      id: '2x_reward',
+      name: '2X THE REWARD!',
+      desc: 'You are earning DOUBLE POINTS for this question.'
     },
-    'time_boost': {
-      id: 'time_boost',
-      name: 'Extra Time (+30s)',
-      desc: 'Extra Time (+30s)'
+    'points_heist': {
+      id: 'points_heist',
+      name: 'POINTS HEIST',
+      desc: 'Steal 50% of the points from the other team’s correct answer.'
     },
-    'question_swap': {
-      id: 'question_swap',
-      name: 'Question Swap',
-      desc: 'Question Swap'
+    'one_more_question': {
+      id: 'one_more_question',
+      name: 'ONE MORE QUESTION!',
+      desc: 'Get an extra question to boost your score.'
     },
-    'hint_access': {
-      id: 'hint_access',
-      name: 'Hint Access',
-      desc: 'Hint Access'
+    'skip_turn': {
+      id: 'skip_turn',
+      name: 'SKIP THEIR TURN!',
+      desc: 'Force the other team to skip their next question. No question, no points!'
     },
-    'team_assist': {
-      id: 'team_assist',
-      name: 'Team Tag / Collaboration',
-      desc: 'Team Tag / Collaboration'
+    'cut_reward': {
+      id: 'cut_reward',
+      name: 'CUT THEIR REWARD!',
+      desc: 'If the other team answers correctly, they receive only 50% of the points.'
     },
-    'shield_protect': {
-      id: 'shield_protect',
-      name: 'Score Shield / Protection',
-      desc: 'Score Shield / Protection'
+    'your_challenge': {
+      id: 'your_challenge',
+      name: 'YOUR QUESTION. THEIR CHALLENGE!',
+      desc: 'Choose the next question and make the other team answer it. If they answer correctly, both teams receive 50% of the points!'
     }
   };
 

@@ -313,12 +313,115 @@ let pendingMysteryIndex = -1;
 
 
 /* =========================================================
-   POWER-UP MODAL LOGIC & DYNAMIC INJECTION
+   6 EXCLUSIVE POWER-UP DEFINITIONS & NO-REPEAT ALLOCATION
 ========================================================= */
+
+const POWER_UPS_POOL = [
+    {
+        id: "2x_reward",
+        title: "2X THE REWARD!",
+        icon: "⚡",
+        desc: "You are earning DOUBLE POINTS for this question."
+    },
+    {
+        id: "points_heist",
+        title: "POINTS HEIST",
+        icon: "💰",
+        desc: "Steal 50% of the points from the other team’s correct answer."
+    },
+    {
+        id: "one_more_question",
+        title: "ONE MORE QUESTION!",
+        icon: "🎯",
+        desc: "Get an extra question to boost your score."
+    },
+    {
+        id: "skip_turn",
+        title: "SKIP THEIR TURN!",
+        icon: "🚫",
+        desc: "Force the other team to skip their next question. No question, no points!"
+    },
+    {
+        id: "cut_reward",
+        title: "CUT THEIR REWARD!",
+        icon: "✂️",
+        desc: "If the other team answers correctly, they receive only 50% of the points."
+    },
+    {
+        id: "your_challenge",
+        title: "YOUR QUESTION. THEIR CHALLENGE!",
+        icon: "⚔️",
+        desc: "Choose the next question and make the other team answer it. If they answer correctly, both teams receive 50% of the points!"
+    }
+];
+
+function getPowerUpForCard(card, index) {
+    if (!card) return POWER_UPS_POOL[0];
+
+    const cardKey = getCardKey(card, index);
+    let assignments = {};
+    try {
+        assignments = JSON.parse(localStorage.getItem('mpl_powerup_assignments') || '{}');
+    } catch (e) {
+        assignments = {};
+    }
+
+    // Return already assigned power-up for this card if present
+    if (assignments[cardKey]) {
+        const found = POWER_UPS_POOL.find(p => p.id === assignments[cardKey]);
+        if (found) return found;
+    }
+
+    // Ensure power-ups do not repeat across assigned cards/tracks
+    const assignedIds = Object.values(assignments);
+    let available = POWER_UPS_POOL.filter(p => !assignedIds.includes(p.id));
+
+    // If all 6 power-ups have already been assigned, restart clean draw pool
+    if (available.length === 0) {
+        available = [...POWER_UPS_POOL];
+    }
+
+    const chosen = available[Math.floor(Math.random() * available.length)];
+    assignments[cardKey] = chosen.id;
+    try {
+        localStorage.setItem('mpl_powerup_assignments', JSON.stringify(assignments));
+    } catch (e) { }
+
+    return chosen;
+}
 
 function closePowerUpModal() {
     if (powerUpPopup) {
         powerUpPopup.classList.remove("active");
+    }
+}
+
+function renderPowerUpModal(card, index) {
+    const powerUp = getPowerUpForCard(card, index);
+    ensurePowerUpElements();
+
+    if (powerUpPopup) {
+        const powerUpBox = powerUpPopup.querySelector(".powerup-box");
+        if (powerUpBox) {
+            powerUpBox.innerHTML = `
+                <button class="close-powerup" id="closePowerUp">×</button>
+                <div class="powerup-badge">⚡ POWER-UP UNLOCKED! ⚡</div>
+                <div class="powerup-card-body">
+                    <div class="powerup-icon-badge">${powerUp.icon}</div>
+                    <div class="powerup-title">${powerUp.title}</div>
+                    <div class="powerup-benefit-text">${powerUp.desc}</div>
+                </div>
+                <button type="button" class="powerup-claim-btn" id="claimPowerUpBtn">CLAIM POWER-UP</button>
+            `;
+
+            const newClose = powerUpBox.querySelector("#closePowerUp");
+            if (newClose) newClose.addEventListener("click", closePowerUpModal);
+
+            const claimBtn = powerUpBox.querySelector("#claimPowerUpBtn");
+            if (claimBtn) claimBtn.addEventListener("click", closePowerUpModal);
+        }
+
+        powerUpPopup.classList.add("active");
     }
 }
 
@@ -354,30 +457,24 @@ function ensurePowerUpElements() {
         powerUpPopup.innerHTML = `
             <div class="powerup-box">
                 <button class="close-powerup" id="closePowerUp">×</button>
-                <div class="powerup-badge">⚡ POWER-UP BENEFIT</div>
-                <div class="powerup-benefit-text" id="powerUpBenefitText">
-                    ⚡ TEAM BENEFIT: The team solving this Wild Card earns +100 BONUS POINTS and a 2X MULTIPLIER on their next question!
+                <div class="powerup-badge">⚡ POWER-UP UNLOCKED! ⚡</div>
+                <div class="powerup-card-body">
+                    <div class="powerup-icon-badge">⚡</div>
+                    <div class="powerup-title">2X THE REWARD!</div>
+                    <div class="powerup-benefit-text">You are earning DOUBLE POINTS for this question.</div>
                 </div>
+                <button type="button" class="powerup-claim-btn" id="claimPowerUpBtn">CLAIM POWER-UP</button>
             </div>
         `;
         document.body.appendChild(powerUpPopup);
     }
 
     closePowerUp = document.getElementById("closePowerUp");
-    powerUpBenefitText = document.getElementById("powerUpBenefitText");
 
     if (powerUpButton && !powerUpButton._hasPowerUpListener) {
         powerUpButton._hasPowerUpListener = true;
         powerUpButton.addEventListener("click", () => {
-            const benefit = (currentCard && (currentCard.dataset.powerup || currentCard.dataset.benefit))
-                ? (currentCard.dataset.powerup || currentCard.dataset.benefit)
-                : "⚡ TEAM BENEFIT: The team solving this Wild Card earns +100 BONUS POINTS and a 2X MULTIPLIER on their next question!";
-            if (powerUpBenefitText) {
-                powerUpBenefitText.textContent = benefit;
-            }
-            if (powerUpPopup) {
-                powerUpPopup.classList.add("active");
-            }
+            renderPowerUpModal(currentCard, currentCardIndex);
         });
     }
 
@@ -425,56 +522,122 @@ function openQuestionModal(card, index) {
     const points = card.dataset.points || '';
     const answer = card.dataset.answer || '';
     const isMystery = !isPowerupDisabledTrack() && (card.dataset.mystery === "true");
+    const audioSrc = (card.dataset.audio || '').trim();
 
     if (popupTrack) {
         popupTrack.innerHTML = isMystery
             ? `${track} &bull; <span style="color: var(--gold); text-shadow: 0 0 10px rgba(240,180,41,0.5);">WILD CARD</span>`
             : track;
     }
-    // Support photo clue + video clue + text question in card
-    const clueVideo = card.querySelector('.question-video, video');
-    const clueImg = card.querySelector('.question-img, img');
-    const clueText = card.querySelector('.question-text');
-    let finalQuestionContent = '';
 
-    if (clueVideo) {
-        const videoSrc = (clueVideo.getAttribute('src') || clueVideo.currentSrc || '').trim();
-        const textContent = clueText ? clueText.innerHTML.trim() : (question || '');
+    const duration = getQuestionDuration(card, index);
 
-        if (videoSrc && videoSrc !== '' && videoSrc !== '#') {
-            finalQuestionContent = `
-                <div class="popup-photo-container">
-                    <video src="${videoSrc}" class="popup-video-clue" controls autoplay loop playsinline></video>
+    // Support audio clue (Song track / Music clips)
+    if (audioSrc && audioSrc !== '' && audioSrc !== '#') {
+        const textContent = question || '';
+
+        // Stage 1: Music Player & Move to Question button
+        if (popupQuestion) {
+            popupQuestion.innerHTML = `
+                <div class="popup-music-container" id="popupMusicContainer">
+                    <div class="popup-music-header">
+                        <div class="music-disc-icon-wrap rotating">
+                            <span class="music-icon">🎵</span>
+                        </div>
+                        <div class="music-track-info">
+                            <div class="music-badge">AUDIO CLUE</div>
+                            <div class="music-title">Play & Listen to Song Clip</div>
+                        </div>
+                    </div>
+                    <audio class="popup-music-audio" id="songAudioPlayer" src="${audioSrc}" controls autoplay></audio>
+                    <button type="button" class="proceed-to-question-btn" id="proceedToQuestionBtn">
+                        <span>Move to Question ➔</span>
+                    </button>
                 </div>
-                <div class="popup-question-text">${textContent}</div>
-            `;
-        } else {
-            finalQuestionContent = `
-                <div class="popup-question-text">${textContent}</div>
+                <div class="popup-question-text" id="songQuestionText" style="display: none;">
+                    ${textContent}
+                </div>
             `;
         }
-    } else if (clueImg || clueText) {
-        const imgSrc = clueImg ? (clueImg.getAttribute('src') || '').trim() : '';
-        const textContent = clueText ? clueText.innerHTML.trim() : (question || '');
 
-        if (imgSrc && imgSrc !== '' && imgSrc !== '#') {
-            finalQuestionContent = `
-                <div class="popup-photo-container">
-                    <img src="${imgSrc}" alt="Question Clue" class="popup-photo-clue" onerror="this.parentElement.style.display='none'">
-                </div>
-                <div class="popup-question-text">${textContent}</div>
-            `;
-        } else {
-            // src is empty — show text question only without broken image icon
-            finalQuestionContent = `
-                <div class="popup-question-text">${textContent}</div>
-            `;
+        // Hide answer button until question is revealed
+        if (answerButton) {
+            answerButton.style.display = "none";
+        }
+
+        // Reset timer display and wait until "Move to Question" is clicked
+        stopQuestionTimer();
+        resetTimerDisplay(duration);
+
+        // Bind "Move to Question" button
+        const proceedBtn = document.getElementById("proceedToQuestionBtn");
+        const songContainer = document.getElementById("popupMusicContainer");
+        const songText = document.getElementById("songQuestionText");
+
+        if (proceedBtn) {
+            proceedBtn.addEventListener("click", () => {
+                if (songContainer) songContainer.style.display = "none";
+                if (songText) songText.style.display = "block";
+                if (answerButton) answerButton.style.display = "inline-flex";
+
+                // Start countdown timer once question text is revealed!
+                startQuestionTimer(duration);
+            }, { once: true });
         }
     } else {
-        finalQuestionContent = question;
+        // Normal question (Text, Video, Photo, or Standard)
+        if (answerButton) {
+            answerButton.style.display = "inline-flex";
+        }
+
+        const clueVideo = card.querySelector('.question-video, video');
+        const clueImg = card.querySelector('.question-img, img');
+        const clueText = card.querySelector('.question-text');
+        let finalQuestionContent = '';
+
+        if (clueVideo) {
+            const videoSrc = (clueVideo.getAttribute('src') || clueVideo.currentSrc || '').trim();
+            const textContent = clueText ? clueText.innerHTML.trim() : (question || '');
+
+            if (videoSrc && videoSrc !== '' && videoSrc !== '#') {
+                finalQuestionContent = `
+                    <div class="popup-photo-container">
+                        <video src="${videoSrc}" class="popup-video-clue" controls autoplay loop playsinline></video>
+                    </div>
+                    <div class="popup-question-text">${textContent}</div>
+                `;
+            } else {
+                finalQuestionContent = `
+                    <div class="popup-question-text">${textContent}</div>
+                `;
+            }
+        } else if (clueImg || clueText) {
+            const imgSrc = clueImg ? (clueImg.getAttribute('src') || '').trim() : '';
+            const textContent = clueText ? clueText.innerHTML.trim() : (question || '');
+
+            if (imgSrc && imgSrc !== '' && imgSrc !== '#') {
+                finalQuestionContent = `
+                    <div class="popup-photo-container">
+                        <img src="${imgSrc}" alt="Question Clue" class="popup-photo-clue" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <div class="popup-question-text">${textContent}</div>
+                `;
+            } else {
+                // src is empty — show text question only without broken image icon
+                finalQuestionContent = `
+                    <div class="popup-question-text">${textContent}</div>
+                `;
+            }
+        } else {
+            finalQuestionContent = question;
+        }
+
+        if (popupQuestion) popupQuestion.innerHTML = finalQuestionContent;
+
+        // Start countdown timer immediately for normal questions
+        startQuestionTimer(duration);
     }
 
-    if (popupQuestion) popupQuestion.innerHTML = finalQuestionContent;
     if (popupPoints) popupPoints.textContent = points;
     if (popupAnswer) popupAnswer.textContent = answer;
 
@@ -484,10 +647,6 @@ function openQuestionModal(card, index) {
 
     // Show question popup
     if (popup) popup.classList.add("active");
-
-    // Start countdown timer for question opened (25s, 30s, 35s, 40s, 45s, 50s or 30s)
-    const duration = getQuestionDuration(card, index);
-    startQuestionTimer(duration);
 }
 
 
@@ -559,13 +718,14 @@ if (biddingPopup) {
 
 function closeQuestion() {
     if (popup) {
-        popup.querySelectorAll('video').forEach(v => {
-            try { v.pause(); v.currentTime = 0; } catch(e) {}
+        popup.querySelectorAll('video, audio').forEach(media => {
+            try { media.pause(); media.currentTime = 0; } catch(e) {}
         });
         popup.classList.remove("active");
     }
     if (popupAnswer) popupAnswer.classList.remove("show");
     if (powerUpButton) powerUpButton.style.display = "none";
+    if (answerButton) answerButton.style.display = "inline-flex";
     closePowerUpModal();
     stopQuestionTimer();
     resetTimerDisplay();
@@ -680,10 +840,11 @@ if (resetButton) {
             delete card.dataset.revealed;
         });
 
-        // Reset entire game: unmark all questions and reset wildcards across all tracks
+        // Reset entire game: unmark all questions, wildcards and power-up assignments across all tracks
         try {
             localStorage.removeItem('mpl_used_questions');
             localStorage.removeItem('mpl_wildcards');
+            localStorage.removeItem('mpl_powerup_assignments');
         } catch (e) { }
 
         // Re-randomize wildcard for current track
